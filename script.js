@@ -45,16 +45,21 @@ workouts.forEach((workout, workoutIndex) => {
   workout.exercises.forEach((exercise, exerciseIndex) => {
     const exerciseItem = document.createElement('li');
     exerciseItem.classList.add('workout-item');
-    exerciseItem.textContent = `${exercise.title} - ${exercise.sets}, `;
 
-    const repInput = document.createElement('input');
-    repInput.type = 'number';
-    repInput.placeholder = 'Reps';
-    repInput.value = localStorage.getItem(`reps-${workoutIndex}-${exerciseIndex}`) || '';
-    repInput.addEventListener('input', () => {
-      localStorage.setItem(`reps-${workoutIndex}-${exerciseIndex}`, repInput.value);
+    const exerciseTitle = document.createElement('span');
+    exerciseTitle.textContent = exercise.title;
+    exerciseItem.appendChild(exerciseTitle);
+
+    exercise.sets.forEach((set, setIndex) => {
+      const setInput = document.createElement('input');
+      setInput.type = 'number';
+      setInput.placeholder = `Set ${setIndex + 1}`;
+      setInput.value = localStorage.getItem(`set-${workoutIndex}-${exerciseIndex}-${setIndex}`) || '';
+      setInput.addEventListener('input', () => {
+        localStorage.setItem(`set-${workoutIndex}-${exerciseIndex}-${setIndex}`, setInput.value);
+      });
+      exerciseItem.appendChild(setInput);
     });
-    exerciseItem.appendChild(repInput);
 
     const weightInput = document.createElement('input');
     weightInput.type = 'number';
