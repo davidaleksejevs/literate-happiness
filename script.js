@@ -31,7 +31,7 @@ const workouts = [
 
 const workoutList = document.getElementById('workout-list');
 
-workouts.forEach((workout) => {
+workouts.forEach((workout, workoutIndex) => {
   const workoutDiv = document.createElement('div');
   workoutDiv.classList.add('workout');
 
@@ -41,10 +41,30 @@ workouts.forEach((workout) => {
   workoutDiv.appendChild(workoutTitle);
 
   const exerciseList = document.createElement('ul');
-  workout.exercises.forEach((exercise) => {
+  
+  workout.exercises.forEach((exercise, exerciseIndex) => {
     const exerciseItem = document.createElement('li');
     exerciseItem.classList.add('workout-item');
-    exerciseItem.textContent = `${exercise.title} - ${exercise.sets}, ${exercise.reps}`;
+    exerciseItem.textContent = `${exercise.title} - ${exercise.sets}, `;
+
+    const repInput = document.createElement('input');
+    repInput.type = 'number';
+    repInput.placeholder = 'Reps';
+    repInput.value = localStorage.getItem(`reps-${workoutIndex}-${exerciseIndex}`) || '';
+    repInput.addEventListener('input', () => {
+      localStorage.setItem(`reps-${workoutIndex}-${exerciseIndex}`, repInput.value);
+    });
+    exerciseItem.appendChild(repInput);
+
+    const weightInput = document.createElement('input');
+    weightInput.type = 'number';
+    weightInput.placeholder = 'Weight';
+    weightInput.value = localStorage.getItem(`weight-${workoutIndex}-${exerciseIndex}`) || '';
+    weightInput.addEventListener('input', () => {
+      localStorage.setItem(`weight-${workoutIndex}-${exerciseIndex}`, weightInput.value);
+    });
+    exerciseItem.appendChild(weightInput);
+
     exerciseList.appendChild(exerciseItem);
   });
 
